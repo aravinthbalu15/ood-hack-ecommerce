@@ -1,41 +1,49 @@
-import { Link } from "react-router-dom"
-import AuthLayout from "../../components/layout/AuthLayout"
 import SignupForm from "./SignupForm"
+import { Link } from "react-router-dom"
 
 export default function SignupPage() {
   return (
-    <AuthLayout>
-      {/* Header CTA */}
-      <div className="absolute top-6 right-6 text-sm text-slate-600">
-        Already have an account?{" "}
-        <Link
-          to="/login"
-          className="ml-2 rounded-lg bg-slate-900 px-4 py-2
-                     text-white text-sm font-medium hover:bg-slate-800"
-        >
-          Sign in
-        </Link>
-      </div>
-
-      {/* Content */}
-      <div className="w-full max-w-lg">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-semibold text-slate-900 tracking-tight">
-            Create your ApparelDesk account
+    <div className="
+      min-h-screen
+      flex
+      items-center
+      justify-center
+      bg-slate-50
+      px-4
+    ">
+      <div className="
+        w-full
+        max-w-md
+        bg-white
+        rounded-2xl
+        shadow-lg
+        border
+        p-8
+      ">
+        {/* Header */}
+        <div className="mb-6 text-center">
+          <h1 className="text-2xl font-semibold text-slate-900">
+            Create your account
           </h1>
-          <p className="mt-2 text-slate-600">
-            Enterprise-grade platform to manage apparel operations at scale.
+          <p className="mt-1 text-sm text-slate-600">
+            Start your journey with ApparelDesk
           </p>
         </div>
 
-        <div className="rounded-2xl bg-white px-8 py-10 shadow-lg ring-1 ring-slate-200">
-          <SignupForm />
-        </div>
+        {/* FORM */}
+        <SignupForm />
 
-        <p className="mt-8 text-center text-xs text-slate-500">
-          © 2024 ApparelDesk ERP Solutions. All rights reserved.
+        {/* Footer link */}
+        <p className="mt-6 text-center text-sm text-slate-600">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="font-medium text-indigo-600 hover:underline"
+          >
+            Sign in
+          </Link>
         </p>
       </div>
-    </AuthLayout>
+    </div>
   )
 }
