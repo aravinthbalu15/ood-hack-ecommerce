@@ -3,89 +3,112 @@ import Button from "../../components/ui/Button"
 import Checkbox from "../../components/ui/Checkbox"
 
 export default function SignupForm() {
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log("Signup submitted")
+  }
+
   return (
-    <form className="space-y-6">
-      {/* Name */}
+    <form className="space-y-5" onSubmit={handleSubmit}>
+      
       <Input
         label="Full name"
-        placeholder="John Doe"
+        placeholder="Enter your name"
+        required
       />
 
-      {/* Email */}
       <Input
         label="Work email"
         type="email"
-        placeholder="john@company.com"
+        placeholder="name@company.com"
+        required
       />
 
-      {/* Passwords */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <Input
-          label="Password"
-          type="password"
-        />
-        <Input
-          label="Confirm password"
-          type="password"
-        />
-      </div>
+      <Input
+        label="Password"
+        type="password"
+        required
+      />
 
-      {/* Password hint */}
-      <p className="text-xs text-slate-500 leading-relaxed">
-        Use at least 8 characters, including uppercase, lowercase, numbers, and symbols.
+      <Input
+        label="Confirm password"
+        type="password"
+        required
+      />
+
+      <p className="text-xs text-slate-500">
+        Use at least 8 characters with letters, numbers, and symbols.
       </p>
 
-      {/* Terms */}
       <Checkbox
-        label={
-          <span className="text-sm text-slate-600">
-            I agree to the{" "}
-            <span className="font-medium text-slate-900 hover:underline cursor-pointer">
-              Terms of Service
-            </span>{" "}
-            and{" "}
-            <span className="font-medium text-slate-900 hover:underline cursor-pointer">
-              Privacy Policy
-            </span>
-          </span>
-        }
+        required
+        label="I agree to the Terms and Privacy Policy"
       />
 
-      {/* Primary CTA */}
-      <Button type="submit">
+      {/* PRIMARY SIGN UP BUTTON */}
+      <Button
+        type="submit"
+        className="
+          w-full
+          h-11
+          bg-indigo-600
+          text-white
+          font-medium
+          rounded-lg
+          hover:bg-indigo-700
+          focus:outline-none
+          focus:ring-2
+          focus:ring-indigo-500
+          focus:ring-offset-2
+          transition
+        "
+      >
         Create account
       </Button>
 
-      {/* Divider */}
-      <div className="relative py-6">
+      {/* DIVIDER */}
+      <div className="relative py-2">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-slate-200"></div>
+          <div className="w-full border-t border-slate-200" />
         </div>
-        <div className="relative text-center text-xs uppercase tracking-wide text-slate-400">
-          <span className="bg-white px-4">Or continue with</span>
+        <div className="relative text-center text-xs text-slate-400">
+          <span className="bg-white px-4">OR</span>
         </div>
       </div>
 
-      {/* OAuth */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <button
-          type="button"
-          className="flex items-center justify-center gap-2 rounded-lg
-                     border border-slate-300 bg-white px-4 py-2.5
-                     text-sm font-medium text-slate-700 hover:bg-slate-50"
-        >
-          Google
-        </button>
+      {/* GOOGLE SIGN UP BUTTON */}
+      <button
+        type="button"
+        className="
+          w-full
+          h-11
+          flex
+          items-center
+          justify-center
+          gap-3
+          rounded-lg
+          border
+          border-slate-300
+          bg-white
+          text-sm
+          font-medium
+          text-slate-700
+          hover:bg-slate-50
+          focus:outline-none
+          focus:ring-2
+          focus:ring-indigo-500
+          focus:ring-offset-2
+          transition
+        "
+      >
+        <img
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          alt="Google"
+          className="h-5 w-5"
+        />
+        Continue with Google
+      </button>
 
-        <button
-          type="button"
-          className="flex items-center justify-center gap-2 rounded-lg
-                     border border-slate-300 bg-white px-4 py-2.5
-                     text-sm font-medium text-slate-700 hover:bg-slate-50"
-        >
-          Microsoft
-        </button>
-      </div>
     </form>
   )
 }
