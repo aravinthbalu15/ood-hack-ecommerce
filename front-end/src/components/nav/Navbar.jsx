@@ -1,12 +1,17 @@
 import { Link, useNavigate } from "react-router-dom"
 import { Search, ShoppingCart, Heart, LogOut, User } from "lucide-react"
 import { useState } from "react"
+import { useCart } from "../../context/CartContext"
+import { useWishlist } from "../../context/WishlistContext"
 
 export default function Navbar() {
   const [query, setQuery] = useState("")
   const navigate = useNavigate()
 
-  // TEMP auth flag (later replace with real auth state)
+  const { totalItems } = useCart()
+  const { wishlistCount } = useWishlist()
+
+  // TEMP auth state (replace later)
   const isLoggedIn = false
   const userName = "Raj Sharma"
 
@@ -22,16 +27,16 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b">
+    <header className="sticky top-0 z-50 border-b bg-white">
       <div className="mx-auto max-w-7xl px-4">
-        <div className="flex h-16 items-center gap-6">
+        <div className="flex h-16 items-center gap-4">
 
           {/* LOGO */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 shrink-0">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white font-bold">
               A
             </div>
-            <span className="text-lg font-semibold text-slate-900">
+            <span className="hidden sm:block text-lg font-semibold text-slate-900">
               ApparelDesk
             </span>
           </Link>
@@ -42,15 +47,12 @@ export default function Navbar() {
             <Link to="/shop" className="hover:text-indigo-600">Shop</Link>
           </nav>
 
-          {/* SEARCH BAR */}
-          <form
-            onSubmit={handleSearch}
-            className="flex flex-1 items-center"
-          >
+          {/* SEARCH */}
+          <form onSubmit={handleSearch} className="flex flex-1 justify-center">
             <div className="relative w-full max-w-xl">
               <input
                 type="text"
-                placeholder="Search for products, brands and more"
+                placeholder="Search products, brands & more"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="
@@ -70,6 +72,7 @@ export default function Navbar() {
               />
               <button
                 type="submit"
+                disabled={!query.trim()}
                 className="
                   absolute
                   right-1.5
@@ -80,6 +83,7 @@ export default function Navbar() {
                   p-2
                   text-white
                   hover:bg-indigo-700
+                  disabled:opacity-50
                 "
               >
                 <Search size={18} />
@@ -88,30 +92,81 @@ export default function Navbar() {
           </form>
 
           {/* RIGHT ACTIONS */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4 shrink-0">
 
             {/* WISHLIST */}
-            <Link to="/wishlist" className="text-slate-700 hover:text-indigo-600">
+            <Link
+              to="/wishlist"
+              className="relative text-slate-700 hover:text-indigo-600"
+              title="Wishlist"
+            >
               <Heart size={22} />
+              {wishlistCount > 0 && (
+                <span className="
+                  absolute
+                  -top-2
+                  -right-2
+                  flex
+                  h-5
+                  w-5
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-indigo-600
+                  text-xs
+                  text-white
+                ">
+                  {wishlistCount}
+                </span>
+              )}
             </Link>
 
             {/* CART */}
-            <Link to="/cart" className="relative text-slate-700 hover:text-indigo-600">
+            <Link
+              to="/cart"
+              className="relative text-slate-700 hover:text-indigo-600"
+              title="Cart"
+            >
               <ShoppingCart size={22} />
-              <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-xs text-white">
-                2
-              </span>
+              {totalItems > 0 && (
+                <span className="
+                  absolute
+                  -top-2
+                  -right-2
+                  flex
+                  h-5
+                  w-5
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-indigo-600
+                  text-xs
+                  text-white
+                ">
+                  {totalItems}
+                </span>
+              )}
             </Link>
 
             {/* AUTH */}
             {isLoggedIn ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <User size={20} className="text-slate-600" />
                 <span className="hidden sm:block text-sm text-slate-700">
                   {userName}
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50"
+                  className="
+                    rounded-lg
+                    border
+                    border-slate-300
+                    px-3
+                    py-2
+                    text-sm
+                    hover:bg-slate-50
+                  "
+                  title="Sign out"
                 >
                   <LogOut size={16} />
                 </button>
@@ -134,7 +189,6 @@ export default function Navbar() {
               </Link>
             )}
           </div>
-
         </div>
       </div>
     </header>
