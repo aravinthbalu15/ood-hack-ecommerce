@@ -1,22 +1,80 @@
+import { useState } from "react"
+import axios from "axios"
 import Input from "../../components/ui/Input"
 import Button from "../../components/ui/Button"
 import Checkbox from "../../components/ui/Checkbox"
 import { Link, useNavigate } from "react-router-dom"
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+
 export default function LoginForm() {
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  })
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("Login submitted")
-    navigate("/") // TEMP redirect after login
+    setError("")
+
+    if (!formData.email || !formData.password) {
+      setError("Email and password are required")
+      return
+    }
+
+    try {
+      setLoading(true)
+
+      const res = await axios.post(
+        `${API_BASE_URL}/auth/login`,
+        {
+          email: formData.email,
+          password: formData.password,
+        }
+      )
+
+       // 🔥 ROLE BASED REDIRECT
+    if (res.data.role === "admin") {
+      navigate("/admin/dashboard")
+    } else {
+      navigate("/")
+    }
+
+
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
+
+      {error && (
+        <p className="text-sm text-red-600 bg-red-50 p-2 rounded">
+          {error}
+        </p>
+      )}
+
       <Input
         label="Email address"
         type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
         placeholder="name@company.com"
         required
       />
@@ -36,6 +94,9 @@ export default function LoginForm() {
 
         <Input
           type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
           placeholder="Enter your password"
           required
         />
@@ -44,24 +105,21 @@ export default function LoginForm() {
       <Checkbox label="Remember me on this device" />
 
       <Button
-  type="submit"
-  className="
-    w-full
-    h-11
-    bg-indigo-600
-    text-white
-    font-medium
-    rounded-lg
-    hover:bg-indigo-700
-    focus:outline-none
-    focus:ring-2
-    focus:ring-indigo-500
-    focus:ring-offset-2
-    transition
-  "
->
-  Sign in
-</Button>
+        type="submit"
+        disabled={loading}
+        className={`
+          w-full
+          h-11
+          font-medium
+          rounded-lg
+          transition
+          ${loading
+            ? "bg-indigo-400 cursor-not-allowed"
+            : "bg-indigo-600 hover:bg-indigo-700 text-white"}
+        `}
+      >
+        {loading ? "Signing in..." : "Sign in"}
+      </Button>
 
     </form>
   )

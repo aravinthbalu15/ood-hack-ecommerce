@@ -14,7 +14,12 @@ DB();
 const app = express();
 
 // middleware
-app.use(cors());
+
+app.use(cors({
+  origin: "http://localhost:5173", // frontend port
+  credentials: true
+}))
+
 app.use(express.json({ limit: "10mb" }));
 
 // health check
