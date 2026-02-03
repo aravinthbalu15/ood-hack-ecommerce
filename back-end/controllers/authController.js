@@ -47,6 +47,7 @@ export const signup = async (req, res) => {
       name,
       email: normalizedEmail,
       password: hashedPassword,
+      provider: "local",   // 🔥 ADD THIS
       role: "user",
       image: {
         url: uploadResult.secure_url,
@@ -70,31 +71,35 @@ export const signup = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-//For login
+//Login
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // 1. Validate
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required" });
     }
 
-    // 2. Find user (password is hidden by default)
-    const user = await User.findOne({ email: email.toLowerCase() }).select("+password");
+    const user = await User
+      .findOne({ email: email.toLowerCase() })
+      .select("+password +provider");
 
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // 3. Compare password
+    // 🔥 BLOCK SOCIAL LOGIN USERS
+    if (user.provider !== "local") {
+      return res.status(400).json({
+        message: `Please login using ${user.provider}`
+      });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // 4. Generate token
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
@@ -110,4 +115,5 @@ export const login = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
