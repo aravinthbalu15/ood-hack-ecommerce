@@ -61,6 +61,7 @@ export default function LoginForm() {
   }
 
   return (
+    <div>
     <form className="space-y-5" onSubmit={handleSubmit}>
 
       {error && (
@@ -120,7 +121,40 @@ export default function LoginForm() {
       >
         {loading ? "Signing in..." : "Sign in"}
       </Button>
+      
 
     </form>
+    {/* SOCIAL LOGIN */}
+<div className="space-y-3 mt-4">
+
+  {/* GOOGLE */}
+  <button
+    type="button"
+    className="w-full h-11 border flex items-center justify-center gap-3 rounded-lg hover:bg-slate-50 transition"
+  >
+    <img
+      src="https://developers.google.com/identity/images/g-logo.png"
+      alt="Google"
+      className="w-5 h-5"
+    />
+    <span className="text-sm font-medium">Sign in with Google</span>
+  </button>
+  {/* FACEBOOK */}
+  <button
+    type="button"
+    className="w-full h-11 bg-blue-600 text-white flex items-center justify-center gap-3 rounded-lg hover:bg-blue-700 transition"
+  >
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
+      alt="Facebook"
+      className="w-5 h-5"
+    />
+    <span className="text-sm font-medium">Sign in with Facebook</span>
+  </button>
+
+</div>
+
+    </div>
+    
   )
 }

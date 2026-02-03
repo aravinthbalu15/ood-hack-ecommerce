@@ -4,7 +4,8 @@ import "dotenv/config"; // 🔥 MUST be first (ESM safe)
 import express from "express";
 import cors from "cors";
 import DB from "./config/db.js";
-
+import passport from "passport"
+import "./config/passport.js"
 // routes (AFTER dotenv)
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
@@ -12,6 +13,10 @@ import adminRoutes from "./routes/adminRoutes.js";
 DB();
 
 const app = express();
+
+
+app.use(passport.initialize())
+
 
 // middleware
 
