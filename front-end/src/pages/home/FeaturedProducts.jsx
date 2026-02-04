@@ -1,21 +1,49 @@
-export default function FeaturedProducts() {
-  return (
-    <section className="bg-white py-20">
-      <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-2xl font-semibold">Featured Products</h2>
+import { useEffect, useState } from "react"
+import { getProducts } from "../../api/products.api"
+import ProductCardContainer from "../../components/product/ProductCardContainer"
+import Skeleton from "../../components/common/Skeleton"
 
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
-          {["Shirt", "Blazer", "Trousers", "Tie"].map(item => (
-            <div
-              key={item}
-              className="rounded-xl border bg-slate-50 p-4"
-            >
-              <div className="h-40 bg-slate-200 rounded mb-4"></div>
-              <h3 className="font-medium">{item}</h3>
-              <p className="text-sm text-slate-600">$120.00</p>
-            </div>
-          ))}
-        </div>
+export default function FeaturedProducts() {
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let mounted = true
+    const load = async () => {
+      setLoading(true)
+      const data = await getProducts()
+      if (mounted) {
+        setProducts(data.items.slice(0, 8))
+        setLoading(false)
+      }
+    }
+    load()
+    return () => {
+      mounted = false
+    }
+  }, [])
+
+  return (
+    <section className="mx-auto max-w-7xl px-6 py-12">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-medium text-primary">Featured Products</h2>
+      </div>
+      <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {loading
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <div
+                key={index}
+                className="rounded-xl border border-default bg-surface p-4"
+              >
+                <Skeleton className="h-40 w-full" />
+                <Skeleton className="mt-4 h-4 w-3/4" />
+                <Skeleton className="mt-2 h-4 w-1/2" />
+                <Skeleton className="mt-4 h-8 w-full" />
+              </div>
+            ))
+          : products.map((product) => (
+              <ProductCardContainer key={product.id} product={product} />
+            ))}
       </div>
     </section>
   )

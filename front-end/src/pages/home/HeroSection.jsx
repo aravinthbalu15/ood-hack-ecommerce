@@ -1,22 +1,41 @@
+import { Link } from "react-router-dom"
+
 export default function HeroSection() {
   return (
-    <section className="bg-indigo-600 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-10 items-center">
+    <section className="relative overflow-hidden bg-surface">
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-100 via-white to-slate-50" />
+      <div className="relative mx-auto max-w-7xl px-6 py-16 lg:py-24 grid gap-10 lg:grid-cols-2 items-center">
         <div>
-          <h1 className="text-4xl font-bold leading-tight">
-            Fashion that fits <br /> your business style
-          </h1>
-          <p className="mt-4 text-indigo-100">
-            Premium apparel for modern professionals
+          <p className="text-sm font-semibold text-secondary uppercase tracking-wide">
+            Modern Minimal Fashion
           </p>
-          <button className="mt-6 bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-indigo-50">
-            Shop now
-          </button>
+          <h1 className="mt-4 text-4xl font-semibold text-primary leading-tight">
+            Style That Fits Your Life
+          </h1>
+          <p className="mt-4 text-sm text-secondary max-w-md">
+            Premium apparel curated for professionals and teams. Build a
+            wardrobe that feels effortless, refined, and ready for every day.
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Link
+              to="/products"
+              className="rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-white hover:bg-orange-600 transition"
+            >
+              Shop Now
+            </Link>
+            <Link
+              to="/products"
+              className="rounded-lg border border-default px-6 py-3 text-sm font-semibold text-primary hover:bg-slate-100 transition"
+            >
+              Explore Collection
+            </Link>
+          </div>
         </div>
-        <div className="hidden md:block">
+        <div className="relative">
           <img
-            src="https://images.unsplash.com/photo-1521335629791-ce4aec67dd47"
-            className="rounded-xl shadow-lg"
+            src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80"
+            alt="Hero apparel"
+            className="h-[360px] w-full rounded-2xl object-cover shadow-card"
           />
         </div>
       </div>
